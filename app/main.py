@@ -11,7 +11,7 @@ from .api import ping_response
 from .middleware import *
 from .api import start_response, move_response, end_response
 
-snake = none
+snake = None
 board = None
 SNAKE = 1
 WALL = 2
@@ -20,6 +20,11 @@ BUFFER = 3
 CHILL = 4
 ID = 0
 
+
+def distance(p, q):
+    dx = abs(p[0] - q[0])
+    dy = abs(p[1] - q[1])
+    return dx + dy
 
 def init(food, snakes, height, width, ID):
     
@@ -56,7 +61,6 @@ def start():
     global game_board
     game_board = Board(width, height)
     game_board.update(food, snakes)
-
 
     color = "#011f4b"
 
@@ -98,6 +102,88 @@ def move():
     snake_head = snake['body'][0]
     snake_body = snake['body']
     path = None
+
+    middle = [width / 2, height / 2]
+    foods = sorted(food, key = lambda p: distance(p,middle))
+    
+    for food in foods:
+        #print food
+        tentative_path = a_star(snek_head, food, grid, snek_coords)
+        if not tentative_path:
+            #print "no path to food"
+            continue
+
+        path_length = len(tentative_path)
+        snek_length = len(snek_coords) + 1
+
+        dead = False
+        for enemy in data['snakes']:
+            if enemy['id'] == ID:
+                continue
+            if path_length > distance(enemy['coords'][0], food):
+                dead = True
+        if dead:
+            continue
+
+        # Update snek
+        if path_length < snek_length:
+            remainder = snek_length - path_length
+            new_snek_coords = list(reversed(tentative_path)) + snek_coords[:remainder]
+        else:
+            new_snek_coords = list(reversed(tentative_path))[:snek_length]
+
+        if grid[new_snek_coords[0][0]][new_snek_coords[0][1]] == FOOD:
+            # we ate food so we grow
+            new_snek_coords.append(new_snek_coords[-1])
+
+        # Create a new grid with the updates snek positions
+        new_grid = copy.deepcopy(grid)
+
+        for coord in snek_coords:
+            new_grid[coord[0]][coord[1]] = 0
+        for coord in new_snek_coords:
+            new_grid[coord[0]][coord[1]] = SNAKE
+
+        #printg(grid, 'orig')
+        #printg(new_grid, 'new')
+
+        #print snek['coords'][-1]
+        foodtotail = a_star(food,new_snek_coords[-1],new_grid, new_snek_coords)
+        if foodtotail:
+            path = tentative_path
+            break
+        #print "no path to tail from food"
+
+
+
+    if not path:
+        path = a_star(snek_head, snek['coords'][-1], grid, snek_coords)
+
+    despair = not (path and len(path) > 1)
+
+    if despair:
+        for neighbour in neighbours(snek_head,grid,0,snek_coords, [1,2,5]):
+            path = a_star(snek_head, neighbour, grid, snek_coords)
+            #print 'i\'m scared'
+            break
+
+    despair = not (path and len(path) > 1)
+
+
+    if despair:
+        for neighbour in neighbours(snek_head,grid,0,snek_coords, [1,2]):
+            path = a_star(snek_head, neighbour, grid, snek_coords)
+            #print 'lik so scared'
+            break
+
+    if path:
+        assert path[0] == tuple(snek_head)
+        assert len(path) > 1
+
+    return {
+        'move': direction(path[0], path[1]),
+        'taunt': 'TRAITOR!'
+    }
    
 
     directions = ['up', 'down', 'left', 'right']
