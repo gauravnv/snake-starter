@@ -34,7 +34,7 @@ def start():
     return start_response(color)
 
 @bottle.post('/move')
-@middleware.timer
+@timer
 def move():
     data = bottle.request.json
     height = int(data["board"]["height"])

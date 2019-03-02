@@ -6,10 +6,10 @@ def timer(handler):
         res = handler()
         end = int(round(time.time() * 1000))
         delta = end - start
-        print "Response time: %d ms" % delta
+        print("Response time: %d ms" % delta)
         if delta > 250:
-            print "ERROR: maximum response time exceeded!"
+            print("ERROR: maximum response time exceeded!")
         elif delta > 200:
-            print "WARNING: approaching maximum response time!"
+            print("WARNING: approaching maximum response time!")
         return res
     return timer_wrapper
