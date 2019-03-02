@@ -2,6 +2,7 @@ import json
 import os
 import random
 import bottle
+import middleware
 
 from .api import ping_response, start_response, move_response, end_response
 
@@ -59,6 +60,7 @@ def start():
 
 
 @bottle.post('/move')
+@middleware.timer
 def move():
     data = bottle.request.json
     height = int(data["board"]["height"])
