@@ -90,7 +90,7 @@ def move():
     # print("health: " + str(health))
     # print("width: " + str(width))
 
-    directions = ['up', 'down', 'left', 'right']
+    directions = ['up', 'left']
     direction = random.choice(directions)
 
     return move_response(direction)
