@@ -1,10 +1,9 @@
 import bottle
 import json
 import random
-from .middleware import *
 
-import middleware
-import board
+from .middleware import *
+from .board import Board
 
 from .api import start_response, move_response, end_response
 
@@ -22,7 +21,8 @@ def start():
     food = list(data["board"]["food"])
     snakes = list(data["board"]["snakes"])
 
-    game_board = board.Board(width, height)
+    global game_board
+    game_board = Board(width, height)
     game_board.update(food, snakes)
 
     """
