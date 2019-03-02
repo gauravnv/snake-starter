@@ -1,7 +1,7 @@
 import bottle
 import json
 import random
-import middleware
+from .middleware import *
 
 from .api import start_response, move_response, end_response
 
