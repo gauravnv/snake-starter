@@ -17,7 +17,7 @@ def start():
     width = int(data["board"]["width"])
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-
+    myBody = data["board"]["snakes"][0]["body"]
     food = list(data["board"]["food"])
     snakes = list(data["board"]["snakes"])
 
@@ -44,7 +44,7 @@ def move():
     width = int(data["board"]["width"])
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-
+    myBody = data["board"]["snakes"][0]["body"]
     food = list(data["board"]["food"])
     snakes = list(data["board"]["snakes"])
 
@@ -77,10 +77,7 @@ def end():
     width = int(data["board"]["width"])
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-    myBody = {
-        'x': 0,
-        'y': 0
-    }
+    myBody = data["board"]["snakes"][0]["body"]
     food = list(data["board"]["food"])
     snakes = list(data["board"]["snakes"])
 
