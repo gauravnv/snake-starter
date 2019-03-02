@@ -1,11 +1,13 @@
 import bottle
 import json
 import random
+
 from .middleware import *
+from .board import Board
 
 from .api import start_response, move_response, end_response
 
-board = None
+game_board = None
 
 @bottle.post('/start')
 def start():
@@ -15,12 +17,13 @@ def start():
     width = int(data["board"]["width"])
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-    myBody = {
-        'x': 0,
-        'y': 0
-    }
+
     food = list(data["board"]["food"])
-    snakes = list(data["board"]["snakes"])    
+    snakes = list(data["board"]["snakes"])
+
+    global game_board
+    game_board = Board(width, height)
+    game_board.update(food, snakes)
 
     """
     TODO: If you intend to have a stateful snake AI,
@@ -41,12 +44,11 @@ def move():
     width = int(data["board"]["width"])
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-    myBody = {
-        'x': 0,
-        'y': 0
-    }
+
     food = list(data["board"]["food"])
     snakes = list(data["board"]["snakes"])
+
+    game_board.update(food, snakes)
 
     """
     TODO: Using the data from the endpoint request object, your
