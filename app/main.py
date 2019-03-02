@@ -1,6 +1,6 @@
 import os
 import bottle
-import game_handlers
+from .game_handlers import *
 
 from .api import ping_response
 
