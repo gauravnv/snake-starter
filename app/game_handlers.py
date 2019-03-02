@@ -18,12 +18,13 @@ def start():
     turn = int(data["turn"])
     health = int(data["you"]["health"])
     myBody = data["board"]["snakes"][0]["body"]
-    food = list(data["board"]["food"])
-    snakes = list(data["board"]["snakes"])
+
+    food = data["board"]["food"]
+    snakes = data["board"]["snakes"]
+    you = data["you"]
 
     global game_board
-    game_board = Board(width, height)
-    game_board.update(food, snakes)
+    game_board = Board(width, height, food, snakes, you)
 
     """
     TODO: If you intend to have a stateful snake AI,
@@ -40,32 +41,23 @@ def start():
 @timer
 def move():
     data = bottle.request.json
-    height = int(data["board"]["height"])
-    width = int(data["board"]["width"])
+
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-    myBody = data["board"]["snakes"][0]["body"]
-    food = list(data["board"]["food"])
-    snakes = list(data["board"]["snakes"])
 
-    game_board.update(food, snakes)
+    food = data["board"]["food"]
+    snakes = data["board"]["snakes"]
+    you = data["you"]
+
+    game_board.update(food, snakes, you)
 
     """
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
     """
     print(json.dumps(data))
-    # print("food: ")
-    # print(food)
-    # print("snakes: ") 
-    # print(snakes)
-    # print("body coords:")
-    # print(myBody)
-    # print("health: " + str(health))
-    # print("width: " + str(width))
 
-    directions = ['up', 'down', 'left', 'right']
-    direction = random.choice(directions)
+    direction = game_board.get_possible_moves()
 
     return move_response(direction)
 
@@ -77,7 +69,6 @@ def end():
     width = int(data["board"]["width"])
     turn = int(data["turn"])
     health = int(data["you"]["health"])
-    myBody = data["board"]["snakes"][0]["body"]
     food = list(data["board"]["food"])
     snakes = list(data["board"]["snakes"])
 
