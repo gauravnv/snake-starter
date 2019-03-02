@@ -11,4 +11,5 @@ def timer(handler):
             print "ERROR: maximum response time exceeded!"
         elif delta > 200:
             print "WARNING: approaching maximum response time!"
+        return res
     return timer_wrapper
