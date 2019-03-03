@@ -50,3 +50,26 @@ class Board:
 	def get_possible_moves(self):
 		"""Return list of possible moves for player snake."""
 		return self.player_snake.get_possible_moves(self)
+
+	def get_directions_closest_pellet(self):
+		"""Return list of possible moves for player snake."""
+		return self.player_snake.get_directions_closest_pellet(self)
+
+	def get_closest_pellet(self, point):
+		"""Get food closest to given point."""
+		x = point['x']
+		y = point['y']
+
+		closest_pellet = None
+		min_distance = -1
+		for pellet in self.food:
+			px = pellet['x']
+			py = pellet['y']
+
+			distance = abs(px - x) + abs(py - y)
+
+			if closest_pellet is None or distance < min_distance:
+				closest_pellet = pellet
+				min_distance = distance
+
+		return closest_pellet

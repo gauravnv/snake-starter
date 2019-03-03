@@ -57,9 +57,17 @@ def move():
     """
     print(json.dumps(data))
 
-    direction = game_board.get_possible_moves()
+    food_directions = game_board.get_directions_closest_pellet()
+    possible_directions = game_board.get_possible_moves()
 
-    return move_response(direction)
+    moves = list(set(food_directions) & set(possible_directions))
+    move = 'up'
+    if moves:
+        move = random.choice(moves)
+    elif possible_directions:
+        move = random.choice(possible_directions)
+
+    return move_response(move)
 
 @bottle.post('/end')
 def end():
