@@ -26,8 +26,8 @@ class Board:
 			for life, body_part in enumerate(snake['body']):
 				# life represents how many more turns that tile will be occupied
 				# TODO: check if body parts are in the correct order.
-				body_part = Point.from_json(body_part)
-				board[point.get_coords()] = life
+				point = Point.from_json(body_part)
+				board[point.get_coords()] = life + 1
 
 		return board
 
