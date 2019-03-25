@@ -1,6 +1,5 @@
 import bottle
 import json
-import random
 
 from .middleware import *
 from .game_logic import get_next_move
@@ -22,10 +21,10 @@ def move():
     height = data["board"]["height"]
     health = data["you"]["health"]
     food = data["board"]["food"]
-    player = data["you"]
-    snakes = data["board"]["snakes"]
+    snake = data["you"]
+    enemies = data["board"]["snakes"]
 
-    move = get_next_move(width, height, food, player, snakes)
+    move = get_next_move(width, height, food, health, snake, enemies)
 
     return move_response(move)
 
