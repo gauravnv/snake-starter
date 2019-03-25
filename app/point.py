@@ -1,3 +1,4 @@
+from .constants import Directions
 
 class Point:
     """Represents two dimensional coordinates."""
@@ -20,6 +21,20 @@ class Point:
 
     def get_coords(self):
         return (self.x, self.y)
+
+    def get_directions_from(self, start):
+        directions = []
+        if self.x - start.x < 0:
+            directions.append(Directions.LEFT)
+        elif self.x - start.x > 0:
+            directions.append(Directions.RIGHT)
+
+        if self.y - start.y < 0:
+            directions.append(Directions.UP)
+        elif self.y - start.y > 0:
+            directions.append(Directions.DOWN)
+
+        return directions
 
     def copy(self, dx = 0, dy = 0):
         return Point(self.x + dx, self.y + dy)

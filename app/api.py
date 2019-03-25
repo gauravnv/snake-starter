@@ -1,6 +1,8 @@
 import json
 from bottle import HTTPResponse
 
+from .constants import Directions
+
 def ping_response():
     return HTTPResponse(
         status=200
@@ -23,7 +25,7 @@ def start_response(color):
     )
 
 def move_response(move):
-    assert move in ['up', 'down', 'left', 'right'], \
+    assert move in [Directions.UP, Directions.DOWN, Directions.LEFT, Directions.RIGHT], \
         "Move must be one of [up, down, left, right]"
 
     return HTTPResponse(

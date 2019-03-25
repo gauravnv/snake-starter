@@ -1,6 +1,7 @@
 import random
 
 from .point import Point
+from .constants import Directions
 
 class Snake:
     """Represents snake."""
@@ -16,36 +17,25 @@ class Snake:
         """Get position of snake tail."""
         return Point.from_json(self._body[-1])
 
-    def get_directions_safe(self, board):
+    def get_moves_safe(self, board):
         """Get a list of directions to move in given the state of the board."""
         head = self._get_head()
 
         directions = []
         if board.is_empty(head.copy(dx = 1)):
-            directions.append('right')
+            directions.append(Directions.RIGHT)
         if board.is_empty(head.copy(dy = 1)):
-            directions.append('down')
+            directions.append(Directions.DOWN)
         if board.is_empty(head.copy(dx = -1)):
-            directions.append('left')
+            directions.append(Directions.LEFT)
         if board.is_empty(head.copy(dy = -1)):
-            directions.append('up')
+            directions.append(Directions.UP)
 
         return directions
 
-    def get_directions_closest_pellet(self, board):
+    def get_moves_closest_pellet(self, board):
         """Get directions towards closest pellet."""
         head = self._get_head()
         pellet = board.get_closest_pellet(head)
 
-        directions = []
-        if head.x - pellet.x > 0:
-            directions.append('left')
-        elif head.x - pellet.x < 0:
-            directions.append('right')
-
-        if head.y - pellet.y > 0:
-            directions.append('up')
-        elif head.y - pellet.y < 0:
-            directions.append('down')
-
-        return directions
+        return pellet.get_directions_from(head)
