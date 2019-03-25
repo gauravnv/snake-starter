@@ -38,4 +38,4 @@ class Snake:
         head = self._get_head()
         pellet = board.get_closest_pellet(head)
 
-        return pellet.get_directions_from(head)
+        return head.get_directions_to(pellet)

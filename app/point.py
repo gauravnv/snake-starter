@@ -22,16 +22,16 @@ class Point:
     def get_coords(self):
         return (self.x, self.y)
 
-    def get_directions_from(self, start):
+    def get_directions_to(self, end):
         directions = []
-        if self.x - start.x < 0:
+        if self.x - end.x > 0:
             directions.append(Directions.LEFT)
-        elif self.x - start.x > 0:
+        elif self.x - end.x < 0:
             directions.append(Directions.RIGHT)
 
-        if self.y - start.y < 0:
+        if self.y - end.y > 0:
             directions.append(Directions.UP)
-        elif self.y - start.y > 0:
+        elif self.y - end.y < 0:
             directions.append(Directions.DOWN)
 
         return directions
