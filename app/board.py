@@ -1,4 +1,5 @@
 from .snake import Snake
+from .point import Point
 
 class Board:
 	"""Represents board including food, opponent snakes, and board metadata."""
@@ -18,40 +19,37 @@ class Board:
 		board = {}
 
 		for pellet in food:
-			board[(pellet['x'], pellet['y'])] = Board.FOOD
+			point = Point.from_json(pellet)
+			board[point.get_coords()] = Board.FOOD
 
 		for snake in ([snake] + enemies):
 			for life, body_part in enumerate(snake['body']):
 				# life represents how many more turns that tile will be occupied
 				# TODO: check if body parts are in the correct order.
-				board[(body_part['x'], body_part['y'])] = life
+				body_part = Point.from_json(body_part)
+				board[point.get_coords()] = life
 
 		return board
 
-	def is_empty(self, x, y, turn = 0):
+	def is_empty(self, point, turn = 0):
 		"""Determines whether given point is definitely empty and in bounds at the given turn."""
-		in_bounds = 0 <= x < self._width and 0 <= y < self._height
+		in_bounds = 0 <= point.x < self._width and 0 <= point.y < self._height
 		if not in_bounds:
 			return False
 
-		unoccupied = self._board.get((x, y)) is None or self._board[(x, y)] == Board.FOOD
-		return unoccupied
+		contents = self._board.get(point.get_coords())
+		return contents is None or contents == Board.FOOD
 
 	def get_closest_pellet(self, point):
 		"""Get food closest to given point."""
-		x = point['x']
-		y = point['y']
-
 		closest_pellet = None
 		min_distance = -1
 		for pellet in self._food:
-			px = pellet['x']
-			py = pellet['y']
-
-			distance = abs(px - x) + abs(py - y)
+			point_pellet = Point.from_json(pellet)
+			distance = Point.get_manhattan_distance(point, point_pellet)
 
 			if closest_pellet is None or distance < min_distance:
-				closest_pellet = pellet
+				closest_pellet = point_pellet
 				min_distance = distance
 
 		return closest_pellet
