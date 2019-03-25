@@ -11,25 +11,25 @@ class Snake:
         """Get position of snake head."""
         return self.data['body'][0]
 
-    def get_possible_moves(self, game_board):
+    def get_directions_safe(self, board):
         """Get a list of directions to move in given the state of the board."""
         directions = []
 
         head = self.get_head()
         x = head['x']
         y = head['y']
-        if game_board.is_empty(x + 1, y):
+        if board.is_empty(x + 1, y):
             directions.append('right')
-        if game_board.is_empty(x, y + 1):
+        if board.is_empty(x, y + 1):
             directions.append('down')
-        if game_board.is_empty(x - 1, y):
+        if board.is_empty(x - 1, y):
             directions.append('left')
-        if game_board.is_empty(x, y - 1):
+        if board.is_empty(x, y - 1):
             directions.append('up')
 
         return directions
 
-    def get_directions_closest_pellet(self, game_board):
+    def get_directions_closest_pellet(self, board):
         """Get directions towards closest pellet."""
         directions = []
 
@@ -37,7 +37,7 @@ class Snake:
         x = head['x']
         y = head['y']
 
-        closest_pellet = game_board.get_closest_pellet(head)
+        closest_pellet = board.get_closest_pellet(head)
 
         cx = closest_pellet['x']
         cy = closest_pellet['y']
